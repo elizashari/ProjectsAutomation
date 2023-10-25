@@ -1,3 +1,30 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
-# Create your views here.
+from form.form import Project_Registration_Form
+from pr_auto.models import Student
+
+
+def sign_up(request):
+    if request.method == "POST":
+        form = Project_Registration_Form(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            try:
+                student = Student.objects.get(email=email)
+                if student.registration_status is False:
+                    student.registration_status = True
+                    student.save()
+                    return HttpResponse('Регистрация на проект выполнена успешно!')
+                else:
+                    return HttpResponse('Вы уже зарегистрированы!')
+            except Student.DoesNotExist:
+                return HttpResponse('Студент не найден')
+
+    
+    form = Project_Registration_Form()
+    return render(request, 'base.html', {'form': form})
