@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 
-
 class Student(models.Model):
     name = models.CharField(
         'Имя студента',
@@ -33,7 +32,11 @@ class Student(models.Model):
         'Удобное время для созвона',
         max_length=50,
         db_index=True,
+<<<<<<< HEAD
         blank=True)#переименовать в 'удобное время'
+=======
+        blank=True)
+>>>>>>> 1ae403dd10e5685ebe234c48f613771e5a02a1d5
 
     is_dv = models.BooleanField('Ученик с Дальнего Востока', default=None,
                                 null=True, blank=True)
@@ -52,6 +55,7 @@ class Student(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+<<<<<<< HEAD
 
 # class Call_time(models.Model):
 #     time = models.TimeField(auto_now=False, auto_now_add=False)
@@ -70,6 +74,8 @@ class Group(models.Model):
     pass
 
     
+=======
+>>>>>>> 1ae403dd10e5685ebe234c48f613771e5a02a1d5
 
 
 
