@@ -2,16 +2,6 @@ from django.db import models
 
 
 
-class Level(models.Model):
-    title = models.CharField(
-        'Уровень',
-        max_length=25, 
-        db_index=True)
-    
-    def __str__(self):
-        return f'{self.title}'
-    
-
 class Student(models.Model):
     name = models.CharField(
         'Имя студента',
@@ -28,8 +18,22 @@ class Student(models.Model):
         max_length=50,
         db_index=True)
     
-    level = models.ForeignKey(Level, verbose_name='Уровень ученика',
-                              on_delete=models.CASCADE)
+    level = models.CharField(
+        'Уровень ученика',
+        max_length=50, 
+        db_index=True)
+    
+    project_week = models.CharField(
+        'Неделя проекта',
+        max_length=50,
+        db_index=True,
+        blank=True)
+    
+    call_time = models.CharField(
+        'Удобное время для созвона',
+        max_length=50,
+        db_index=True,
+        blank=True)
     
     is_dv = models.BooleanField('Ученик с Дальнего Востока', default=None,
                                 null=True, blank=True)
