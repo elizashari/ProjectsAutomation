@@ -1,6 +1,20 @@
 from django.db import models
 
 
+class Level(models.Model):
+    title = models.CharField(
+        'Уровень',
+        max_length=25, 
+        db_index=True)
+    
+    class Meta:
+        verbose_name = 'Level'
+        verbose_name_plural = ' Levels'
+
+    
+    def __str__(self):
+        return f'{self.title}'
+    
 
 class Student(models.Model):
     name = models.CharField(
@@ -18,10 +32,9 @@ class Student(models.Model):
         max_length=50,
         db_index=True)
     
-    level = models.CharField(
-        'Уровень ученика',
-        max_length=50, 
-        db_index=True)
+    level = models.ForeignKey(Level, verbose_name='Уровень ученика',
+                              on_delete=models.CASCADE)
+
     
     project_week = models.CharField(
         'Неделя проекта',
@@ -47,3 +60,5 @@ class Student(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+    
+
