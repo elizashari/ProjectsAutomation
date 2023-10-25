@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class Student(models.Model):
     name = models.CharField(
         'Имя студента',
@@ -34,26 +33,24 @@ class Student(models.Model):
         max_length=50,
         db_index=True,
         blank=True)
-    
+
     is_dv = models.BooleanField('Ученик с Дальнего Востока', default=None,
                                 null=True, blank=True)
-    
-    registration_status = models.BooleanField('Статус регистрации в проекте', default=False)
-    
 
-    
+    registration_status = models.BooleanField('Статус регистрации в проекте', default=False)
+
     class Meta:
         verbose_name = 'Student'
         verbose_name_plural = ' Students'
         constraints = [
             models.UniqueConstraint(
                 fields=['name', 'email', 'telegram_id'],
+                name='unique_name_email_telegram_id'
             )]
-
 
     def __str__(self):
         return f'{self.name}'
-    
+
 
 # class PM(models.Model):
 #     name = models.CharField(
