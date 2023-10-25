@@ -48,7 +48,6 @@ class Student(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['name', 'email', 'telegram_id'],
-                name='user_author'
             )]
 
 
