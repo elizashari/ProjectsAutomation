@@ -62,3 +62,16 @@ class Student(models.Model):
         return f'{self.name}'
     
 
+class Project(models.Model):
+    title = models.CharField(
+        'Название проекта',
+        max_length=50, 
+        db_index=True)
+    level = models.ForeignKey(Level, verbose_name='Уровень проекта',
+                              on_delete=models.CASCADE)
+    brief = models.FileField(upload_to=None, max_length=254) 
+
+    
+    def __str__(self):
+        return f'{self.title}' 
+
