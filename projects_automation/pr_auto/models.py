@@ -1,6 +1,36 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 
+class Level(models.Model):
+    title = models.CharField(
+        'Уровень',
+        max_length=25, 
+        db_index=True)
+    
+    class Meta:
+        verbose_name = 'Level'
+        verbose_name_plural = ' Levels'
+
+    
+    def __str__(self):
+        return f'{self.title}'
+    
+
+class Level(models.Model):
+    title = models.CharField(
+        'Уровень',
+        max_length=25, 
+        db_index=True)
+    
+    class Meta:
+        verbose_name = 'Level'
+        verbose_name_plural = ' Levels'
+
+    
+    def __str__(self):
+        return f'{self.title}'
+    
+
 class Student(models.Model):
     name = models.CharField(
         'Имя студента',
@@ -12,15 +42,11 @@ class Student(models.Model):
         max_length=50,
         db_index=True)
     
-    email = models.CharField(
-        'email',
-        max_length=50,
-        db_index=True)
+    email = models.EmailField('email ученика')
     
-    level = models.CharField(
-        'Уровень ученика',
-        max_length=50, 
-        db_index=True)
+    level = models.ForeignKey(Level, verbose_name='Уровень ученика',
+                              on_delete=models.CASCADE)
+
     
     project_week = models.CharField(
         'Неделя проекта',
@@ -52,34 +78,50 @@ class Student(models.Model):
         return f'{self.name}'
 
 
+class Project(models.Model):
+    title = models.CharField(
+        'Название проекта',
+        max_length=50, 
+        db_index=True)
+    level = models.ForeignKey(Level, verbose_name='Уровень проекта',
+                              on_delete=models.CASCADE)
+    brief = models.FileField(upload_to=None, max_length=254) 
 
-# class Call_time(models.Model):
-#     time = models.TimeField(auto_now=False, auto_now_add=False)
-#     participants_number = models.PositiveIntegerField(
-#         'Время созвона',
-#         validators=[
-#             MaxValueValidator(
-#                 5)]
-#         )
-#     product_manager = models.ForeignKey("PM", verbose_name=("менеджер проекта"), on_delete=models.CASCADE)
-#     group = models.ForeignKey('Group', verbose_name=("Группа"), on_delete=models.CASCADE)
+    def __str__(self):
+        return f'{self.title}'
 
 
+class Call_time(models.Model):
+    call_time = models.TimeField('Время созвона')
+    def __str__(self):
+        return f'{self.call_time}'
 
-class Group(models.Model):
-    pass
 
+class PM(models.Model):
+    name = models.CharField(
+        'Имя PM',
+        max_length=50,
+        db_index=True)
+    telegram_id = models.CharField(
+        'Telegram id',
+        max_length=50,
+        db_index=True)
+    call_time = models.ManyToManyField(Call_time)
+
+    def __str__(self):
+        return f'{self.name}' 
     
 
+class Group(models.Model):
+    title = models.CharField(max_length=25,verbose_name='Группа')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    pm = models.ForeignKey(PM, on_delete=models.CASCADE, verbose_name='PM проекта')
+    students = models.ManyToManyField(Student)
 
+    def __str__(self):
+        return f'{self.title}'
+ 
 
-
-# class PM(models.Model):
-#     name = models.CharField(
-#         'ФИО продукт менеджера',
-#         max_length=50,
-#         db_index=True)
-#     available_time = models.TimeField()#переименовать в 'удобное время'
 
 
 # class Enrolled_student(models.Model):
@@ -104,3 +146,4 @@ class Group(models.Model):
 #                 fields=['name', 'email', 'telegram_id'],
 #                 name='user_author'
 #             )]    
+
