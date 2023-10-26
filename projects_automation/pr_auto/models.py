@@ -65,7 +65,6 @@ class Student(models.Model):
     def __str__(self):
         return f'{self.name}'
 
-    
 
 class Project(models.Model):
     title = models.CharField(
@@ -76,18 +75,41 @@ class Project(models.Model):
                               on_delete=models.CASCADE)
     brief = models.FileField(upload_to=None, max_length=254) 
 
-    
     def __str__(self):
-        return f'{self.title}' 
+        return f'{self.title}'
 
 
+class Call_time(models.Model):
+    call_time = models.TimeField('Время созвона')
+    def __str__(self):
+        return f'{self.call_time}'
 
-# class PM(models.Model):
-#     name = models.CharField(
-#         'ФИО продукт менеджера',
-#         max_length=50,
-#         db_index=True)
-#     available_time = models.TimeField()
+
+class PM(models.Model):
+    name = models.CharField(
+        'Имя PM',
+        max_length=50,
+        db_index=True)
+    telegram_id = models.CharField(
+        'Telegram id',
+        max_length=50,
+        db_index=True)
+    call_time = models.ManyToManyField(Call_time)
+
+    def __str__(self):
+        return f'{self.name}' 
+    
+
+class Group(models.Model):
+    title = models.CharField(max_length= 25,verbose_name='Группа')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    pm = models.ForeignKey(PM, on_delete=models.CASCADE, verbose_name='PM проекта')
+    students = models.ManyToManyField(Student)
+
+    def __str__(self):
+        return f'{self.title}'
+ 
+
 
 
 # class Enrolled_student(models.Model):
