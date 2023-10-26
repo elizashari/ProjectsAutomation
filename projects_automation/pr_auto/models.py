@@ -27,10 +27,7 @@ class Student(models.Model):
         max_length=50,
         db_index=True)
     
-    email = models.CharField(
-        'email',
-        max_length=50,
-        db_index=True)
+    email = models.EmailField('email ученика')
     
     level = models.ForeignKey(Level, verbose_name='Уровень ученика',
                               on_delete=models.CASCADE)
@@ -101,7 +98,7 @@ class PM(models.Model):
     
 
 class Group(models.Model):
-    title = models.CharField(max_length= 25,verbose_name='Группа')
+    title = models.CharField(max_length=25,verbose_name='Группа')
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     pm = models.ForeignKey(PM, on_delete=models.CASCADE, verbose_name='PM проекта')
     students = models.ManyToManyField(Student)
