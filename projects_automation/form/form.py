@@ -59,12 +59,12 @@ class Project_Registration_Form(forms.ModelForm):
         choices=call_time_choices,
         label='Выберите доступное время'
     )
-    project_weeks_queryset = Project_week.objects.all()
+    project_weeks = Project_week.objects.all()
     project_week_choices = [
         (project_week.project_week,
-         project_week.project_week) for project_week in project_weeks_queryset]
+         project_week.project_week) for project_week in project_weeks]
 
-    project_weeks = forms.ChoiceField(
+    available_weeks = forms.ChoiceField(
         choices=project_week_choices,
         label='Выберите доступную неделю'
     )
