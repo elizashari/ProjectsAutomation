@@ -1,11 +1,14 @@
 from django import forms
-from datetime import datetime, timedelta
-from datetime import time
-from pr_auto.models import Student
+# from datetime import datetime, timedelta
+# from datetime import time
+from pr_auto.models import Student, Call_time, PM
 
 
-# available_time = ['10:00-12:00', '20:00-22:00', ]   #PM.objects.values_list('available_time', flat=True)
+# available_time = PM.objects.values_list('call_time', flat=True)
+# print(available_time)
 # timings_list = []
+
+
 
 # def count_timings(available_time, timings_list):
 #     timings_list = []
@@ -33,16 +36,29 @@ from pr_auto.models import Student
 #                 timings.append(f"{previous_time}-{time_str}")
 #         timings_list.append(timings)    
 #     return timings_list
-#     # return timings
-
 
 # print(count_timings(available_time, timings_list)) 
 
+# # def get_timing_for_pm():
+# #     for t in count_timings(available_time, timings_list):
+
+
+# timings = [('10:00-10:30', '10:30-11:00')]
 
 
 class Project_Registration_Form(forms.ModelForm):
-    # available_time = PM.objects.values_list('available_time', flat=True)
+    call_time_ids = PM.objects.values_list('call_time', flat=True)
+
+    call_times = Call_time.objects.filter(id__in=call_time_ids)
+
+    call_time_choices = [
+        (call_time.call_time, call_time.call_time) for call_time in call_times]
+
+    available_time = forms.ChoiceField(
+        choices=call_time_choices,
+        label='Выберите доступное время'
+    )
 
     class Meta:
         model = Student
-        fields = ('email', )
+        fields = ('email', 'available_time', )
