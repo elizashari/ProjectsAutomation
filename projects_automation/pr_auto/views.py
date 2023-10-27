@@ -15,10 +15,12 @@ def sign_up(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             call_time = form.cleaned_data['available_time']
+            project_weeks = form.cleaned_data['project_weeks']
             try:
                 student = Student.objects.get(email=email)
                 if student.registration_status is False:
                     student.call_time = call_time
+                    student.project_week = project_weeks
                     student.registration_status = True
                     student.save()
                     return HttpResponse('Регистрация на проект выполнена успешно!')

@@ -1,7 +1,7 @@
 from django import forms
 # from datetime import datetime, timedelta
 # from datetime import time
-from pr_auto.models import Student, Call_time, PM
+from pr_auto.models import Student, Call_time, PM, Project_week
 
 
 # available_time = PM.objects.values_list('call_time', flat=True)
@@ -52,11 +52,21 @@ class Project_Registration_Form(forms.ModelForm):
     call_times = Call_time.objects.filter(id__in=call_time_ids)
 
     call_time_choices = [
-        (call_time.call_time, call_time.call_time) for call_time in call_times]
+        (call_time.call_time,
+         call_time.call_time) for call_time in call_times]
 
     available_time = forms.ChoiceField(
         choices=call_time_choices,
         label='Выберите доступное время'
+    )
+    project_weeks_queryset = Project_week.objects.all()
+    project_week_choices = [
+        (project_week.project_week,
+         project_week.project_week) for project_week in project_weeks_queryset]
+
+    project_weeks = forms.ChoiceField(
+        choices=project_week_choices,
+        label='Выберите доступную неделю'
     )
 
     class Meta:
