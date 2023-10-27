@@ -96,6 +96,11 @@ class Call_time(models.Model):
 
     def __str__(self):
         return f'{self.call_time}'
+    
+class Project_week(models.Model):
+    project_week = models.CharField('Неделя проекта', max_length=50)
+    def __str__(self):
+        return f'{self.project_week}'
 
 
 class PM(models.Model):
@@ -115,9 +120,10 @@ class PM(models.Model):
 
 class Group(models.Model):
     title = models.CharField(max_length=25,verbose_name='Группа')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     pm = models.ForeignKey(PM, on_delete=models.CASCADE, verbose_name='PM проекта')
     students = models.ManyToManyField(Student)
+    call_time = models.CharField(max_length=25,verbose_name='Время созвона группы', blank=True)
+    project_week = models.CharField(max_length=25,verbose_name='Неделя проекта', blank=True)
 
     def __str__(self):
         return f'{self.title}'
