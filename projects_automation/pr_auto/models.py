@@ -1,5 +1,20 @@
 from django.db import models
+from django.core.validators import MaxValueValidator
 
+class Level(models.Model):
+    title = models.CharField(
+        'Уровень',
+        max_length=25, 
+        db_index=True)
+    
+    class Meta:
+        verbose_name = 'Level'
+        verbose_name_plural = ' Levels'
+
+    
+    def __str__(self):
+        return f'{self.title}'
+    
 
 class Level(models.Model):
     title = models.CharField(
@@ -43,7 +58,7 @@ class Student(models.Model):
         'Удобное время для созвона',
         max_length=50,
         db_index=True,
-        blank=True)
+        blank=True)#переименовать в 'удобное время'
 
     is_dv = models.BooleanField('Ученик с Дальнего Востока', default=None,
                                 null=True, blank=True)
@@ -70,14 +85,15 @@ class Project(models.Model):
         db_index=True)
     level = models.ForeignKey(Level, verbose_name='Уровень проекта',
                               on_delete=models.CASCADE)
-    brief = models.FileField(upload_to=None, max_length=254) 
+    brief = models.FileField(upload_to=None, max_length=254)
 
     def __str__(self):
         return f'{self.title}'
 
 
 class Call_time(models.Model):
-    call_time = models.TimeField('Время созвона')
+    call_time = models.CharField('Время созвона', max_length=50)
+
     def __str__(self):
         return f'{self.call_time}'
     

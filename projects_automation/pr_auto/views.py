@@ -14,9 +14,13 @@ def sign_up(request):
         form = Project_Registration_Form(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
+            call_time = form.cleaned_data['available_time']
+            available_weeks = form.cleaned_data['available_weeks']
             try:
                 student = Student.objects.get(email=email)
                 if student.registration_status is False:
+                    student.call_time = call_time
+                    student.project_week = available_weeks
                     student.registration_status = True
                     student.save()
                     return HttpResponse('Регистрация на проект выполнена успешно!')
@@ -25,6 +29,5 @@ def sign_up(request):
             except Student.DoesNotExist:
                 return HttpResponse('Студент не найден')
 
-    
     form = Project_Registration_Form()
     return render(request, 'base.html', {'form': form})
